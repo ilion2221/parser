@@ -29,6 +29,14 @@ class Movie extends Model
     {
         return $this->hasMany(Actor::class, 'movie_id','id');
     }
+    public function directors()
+    {
+        return $this->hasMany(Director::class, 'movie_id','id');
+    }
+    public function writers()
+    {
+        return $this->hasMany(Writer::class, 'movie_id','id');
+    }
     public function decades()
     {
         return $this->hasOne(Decades::class, 'movie_id','id');
@@ -36,15 +44,5 @@ class Movie extends Model
     public function selectYear() {
         return $this->countries()->where('is_europe','=', true);
     }
-    public function importToDb() {
-        $path = resource_path('pending-files/*.csv');
-        $g = glob($path);
 
-        foreach (array_slice($g,0,1) as $file){
-            $data = array_map('str_getcsv',file(file));
-            ParseFile::dispatch($data);
-
-            unlink($file);
-        }
-    }
 }
